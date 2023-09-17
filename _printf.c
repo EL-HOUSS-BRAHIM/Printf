@@ -70,8 +70,8 @@ return (printed_chars);
  */
 int print_char(va_list args, const char *format)
 {
-(void)format;
 char c;
+(void)format;
 c = va_arg(args, int);
 _putchar(c);
 return (1);
@@ -85,10 +85,10 @@ return (1);
  */
 int print_string(va_list args, const char *format)
 {
-(void)format;
 char *str;
-str = va_arg(args, char *);
 int printed_chars = 0;
+(void)format;
+str = va_arg(args, char *);
 if (str == NULL)
 str = "(null)";
 while (*str)

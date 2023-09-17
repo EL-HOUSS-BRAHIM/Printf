@@ -1,24 +1,26 @@
 #ifndef MAIN_H
 #define MAIN_H
+
 #include <stdarg.h>
 #include <unistd.h>
-/**
- * struct format - Struct to match format specifier with corresponding function
- * @specifier: The format specifier (e.g., 'c', 's', 'd', 'i', etc.)
- * @f: A pointer to the corresponding function to handle the specifier
- */
+
 typedef struct format
 {
-char specifier;
-int (*f)(va_list, const char *);
+    char specifier;
+    int (*f)(va_list, const char *);
 } format_t;
+
 int _putchar(char c);
 int _printf(const char *format, ...);
+void p_buffer(char *buffer, int *idx, char c, int *printed_chars);
+void flush_buffer(char *buffer, int idx, int *printed_chars);
+
 int process_format(const char *format, va_list args);
+
 int print_char(va_list args, const char *format);
-int print_string(va_list args, const char *format);
 int print_char_with_width(va_list args, int width);
 int print_char_with_zero_flag(va_list args);
+int print_string(va_list args, const char *format);
 int print_string_with_width(va_list args, int width);
 int print_string_with_precision(va_list args, int precision);
 int print_string_with_minus_flag(va_list args);
