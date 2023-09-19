@@ -1,60 +1,74 @@
 #include "main.h"
+
 /**
  * _printf - Custom printf function
- * @format: The format string
- * @...: The variable arguments
+ * @format: Format string
  *
- * Return: Number of characters printed (excluding null byte)
+ * Return: Number of characters printed
  */
 int _printf(const char *format, ...)
 {
 va_list args;
 int printed_chars = 0;
-char buffer[1024];
-int buffer_index = 0;
 va_start(args, format);
-while (format && format[printed_chars])
+while (*format)
 {
-if (format[printed_chars] != '%')
+if (*format != '%')
 {
-buffer[buffer_index++] = format[printed_chars++];
-if (buffer_index == 1024)
-{
-write(1, buffer, buffer_index);
-buffer_index = 0;
-}
+write(1, format, 1);
+printed_chars++;
 }
 else
 {
-char c;
-int num;
+format++;
+if (*format == 'c')
+{
+char c = va_arg(args, int);
+write(1, &c, 1);
 printed_chars++;
-switch (format[printed_chars])
-{
-case 'c':
-c = va_arg(args, int);
-buffer[buffer_index++] = c;
-break;
-case 's':
-for (num = 0; num < 1024; num++)
-{
-char temp = va_arg(args, int);
-if (!temp)
-break;
-buffer[buffer_index++] = temp;
 }
-break;
-case '%':
-buffer[buffer_index++] = '%';
-break;
-case '\0':
-va_end(args);
-return (-1);
-}
+else if (*format == 's')
+{
+char *s = va_arg(args, char *);
+if (s == NULL)
+s = "(null)";
+while (*s)
+{
+write(1, s, 1);
+s++;
 printed_chars++;
 }
 }
-write(1, buffer, buffer_index);
+else if (*format == '%')
+{
+write(1, "%", 1);
+printed_chars++;
+}
+else if (*format == 'd' || *format == 'i')
+{
+int num = va_arg(args, int);
+char buffer[12];
+int len = 0;
+if (num < 0)
+{
+num = -num;
+write(1, "-", 1);
+printed_chars++;
+}
+do
+{
+buffer[len++] = num % 10 + '0';
+num /= 10;
+} while (num > 0);
+while (len > 0)
+{
+write(1, &buffer[--len], 1);
+printed_chars++;
+}
+}
+}
+format++;
+}
 va_end(args);
-return (printed_chars);
+return printed_chars;
 }
