@@ -2,13 +2,16 @@
 
 int main(void)
 {
-    int len;
+	int len;
 
-    len = _printf("Hello, %s! %c is a %s number. %% is a special character.\n", "World", '3', "magic");
-    _printf("Length: %d\n", len);
-
-    len = _printf("Printing an integer: %d\n", 42);
-    _printf("Length: %d\n", len);
-
-    return (0);
+	len = _printf("Let's try some format specifiers:\n");
+	_printf("Character: %c\n", 'A');
+	_printf("String: %s\n", "Hello, World!");
+	_printf("Integer: %d\n", 12345);
+	_printf("Another Integer: %i\n", -6789);
+	_printf("Length modifier l: %ld\n", 1234567890L);
+	_printf("Null String: %s\n", NULL);
+	_printf("Mixed: %s %d %c\n", "Text", 123, 'X');
+	len += _printf("Total characters printed: %d\n", len);
+	return (0);
 }
