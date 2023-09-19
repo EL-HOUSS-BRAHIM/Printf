@@ -1,101 +1,60 @@
 #include "main.h"
-#include <unistd.h>
 /**
- * _printf - Produces output according to a format.
- * @format: A character string containing zero or more directives.
+ * _printf - Custom printf function
+ * @format: The format string
+ * @...: The variable arguments
  *
- * Return: The number of characters printed (excluding the null byte).
+ * Return: Number of characters printed (excluding null byte)
  */
 int _printf(const char *format, ...)
 {
 va_list args;
 int printed_chars = 0;
+char buffer[1024];
+int buffer_index = 0;
 va_start(args, format);
-while (*format)
+while (format && format[printed_chars])
 {
-if (*format != '%')
+if (format[printed_chars] != '%')
 {
-_putchar(*format);
-printed_chars++;
+buffer[buffer_index++] = format[printed_chars++];
+if (buffer_index == 1024)
+{
+write(1, buffer, buffer_index);
+buffer_index = 0;
+}
 }
 else
 {
-format++;
-if (*format == '\0')
-break;
-printed_chars += process_format(format, args);
-}
-format++;
-}
-va_end(args);
-return (printed_chars);
-}
-/**
- * process_format - Processes the format specifier and prints accordingly.
- * @format: A pointer to the format specifier.
- * @args: The variable argument list.
- *
- * Return: The number of characters printed.
- */
-int process_format(const char *format, va_list args)
-{
-int printed_chars = 0;
-switch (*format)
+char c;
+int num;
+printed_chars++;
+switch (format[printed_chars])
 {
 case 'c':
-printed_chars += print_char(args, format);
+c = va_arg(args, int);
+buffer[buffer_index++] = c;
 break;
 case 's':
-printed_chars += print_string(args, format);
+for (num = 0; num < 1024; num++)
+{
+char temp = va_arg(args, int);
+if (!temp)
+break;
+buffer[buffer_index++] = temp;
+}
 break;
 case '%':
-_putchar('%');
-printed_chars++;
+buffer[buffer_index++] = '%';
 break;
-default:
-_putchar('%');
-printed_chars++;
-_putchar(*format);
-printed_chars++;
-break;
+case '\0':
+va_end(args);
+return (-1);
 }
-return (printed_chars);
-}
-/**
- * print_char - Prints a character.
- * @args: The variable argument list.
- * @format: The format specifier (unused in this implementation).
- *
- * Return: The number of characters printed.
- */
-int print_char(va_list args, const char *format)
-{
-char c;
-(void)format;
-c = va_arg(args, int);
-_putchar(c);
-return (1);
-}
-/**
- * print_string - Prints a string.
- * @args: The variable argument list.
- * @format: The format specifier (unused in this implementation).
- *
- * Return: The number of characters printed.
- */
-int print_string(va_list args, const char *format)
-{
-char *str;
-int printed_chars = 0;
-(void)format;
-str = va_arg(args, char *);
-if (str == NULL)
-str = "(null)";
-while (*str)
-{
-_putchar(*str);
-str++;
 printed_chars++;
 }
+}
+write(1, buffer, buffer_index);
+va_end(args);
 return (printed_chars);
 }

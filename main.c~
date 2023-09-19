@@ -1,0 +1,18 @@
+#include "main.h"
+
+int main(void)
+{
+    int len;
+
+    len = _printf("Let's try to printf a simple sentence.\n");
+    _printf("Length:%d\n", len);
+    len = _printf("Character:[%c]\n", 'H');
+    _printf("Length:%d\n", len);
+    len = _printf("String:[%s]\n", "I am a string !");
+    _printf("Length:%d\n", len);
+    len = _printf("Percent:[%%]\n");
+    _printf("Length:%d\n", len);
+    len = _printf("Negative:[%d]\n", -762534);
+    _printf("Length:%d\n", len);
+    return (0);
+}
