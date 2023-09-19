@@ -10,36 +10,47 @@
 int _printf(const char *format, ...)
 {
 va_list args;
+char buffer[BUFFER_SIZE];
 int printed_chars = 0;
+int index = 0;
 int i = 0;
 va_start(args, format);
 while (format && format[i])
 {
-if (format[i] == '%')
+if (index == BUFFER_SIZE - 1)
+{
+printed_chars += p_buffer(buffer, index);
+index = 0;
+}
+if (format[i] != '%')
+{
+buffer[index] = format[i];
+index++;
+}
+else
 {
 i++;
 if (!format[i])
 return (-1);
 if (format[i] == 'c')
-printed_chars += print_char(args);
+buffer[index] = va_arg(args, int);
 else if (format[i] == 's')
 printed_chars += print_str(args);
 else if (format[i] == '%')
-printed_chars += print_percent();
+buffer[index] = '%';
 else if (format[i] == 'd' || format[i] == 'i')
 printed_chars += print_int(args);
 else
 {
-printed_chars += _putchar('%');
-printed_chars += _putchar(format[i]);
+buffer[index] = '%';
+index++;
+buffer[index] = format[i];
 }
-}
-else
-{
-printed_chars += _putchar(format[i]);
+index++;
 }
 i++;
 }
+printed_chars += p_buffer(buffer, index);
 va_end(args);
 return (printed_chars);
 }
