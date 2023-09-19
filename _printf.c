@@ -1,101 +1,62 @@
-#include "main.h"
 #include <stdarg.h>
 #include <unistd.h>
 /**
- * _printf - Produces output according to a format.
- * @format: A string containing zero or more directives.
+ * _printf - Custom printf implementation
+ * @format: The format string
  *
- * Return: The number of characters printed (excluding the null byte).
+ * Return: The number of characters printed (excluding the null byte)
  */
 int _printf(const char *format, ...)
 {
 va_list args;
-char buffer[BUFFER_SIZE];
-int printed_chars = 0;
-int index = 0;
-int i = 0;
+int count = 0;
 va_start(args, format);
-while (format && format[i])
+while (*format)
 {
-if (index == BUFFER_SIZE - 1)
+if (*format == '%')
 {
-printed_chars += p_buffer(buffer, index);
-index = 0;
-}
-if (format[i] != '%')
+format++;
+switch (*format)
 {
-buffer[index] = format[i];
-index++;
-}
-else
-{
-i++;
-if (!format[i])
-return (-1);
-if (format[i] == 'c')
-buffer[index] = va_arg(args, int);
-else if (format[i] == 's')
-printed_chars += print_str(args);
-else if (format[i] == '%')
-buffer[index] = '%';
-else if (format[i] == 'd' || format[i] == 'i')
-printed_chars += print_int(args);
-else
-{
-buffer[index] = '%';
-index++;
-buffer[index] = format[i];
-}
-index++;
-}
-i++;
-}
-printed_chars += p_buffer(buffer, index);
-va_end(args);
-return (printed_chars);
-}
-/**
- * print_char - Prints a character.
- * @args: The va_list containing the character to print.
- *
- * Return: The number of characters printed.
- */
-int print_char(va_list args)
+case 'c':
 {
 char c = va_arg(args, int);
-return (_putchar(c));
+write(1, &c, 1);
+count++;
+break;
 }
-/**
- * print_int - Prints an integer.
- * @args: The va_list containing the integer to print.
- *
- * Return: The number of characters printed.
- */
-int print_int(va_list args)
+case 's':
 {
-int n = va_arg(args, int);
-int printed_chars = 0;
-if (n < 0)
+char *str = va_arg(args, char *);
+if (str == NULL)
+str = "(null)";
+while (*str)
 {
-printed_chars += _putchar('-');
-n = -n;
+write(1, str, 1);
+str++;
+count++;
 }
-if (n / 10)
-printed_chars += print_int_helper(n / 10);
-printed_chars += _putchar((n % 10) + '0');
-return (printed_chars);
+break;
 }
-/**
- * print_int_helper - Helper function for printing integers recursively.
- * @n: The integer to print.
- *
- * Return: The number of characters printed.
- */
-int print_int_helper(int n)
+case '%':
 {
-int printed_chars = 0;
-if (n / 10)
-printed_chars += print_int_helper(n / 10);
-printed_chars += _putchar((n % 10) + '0');
-return (printed_chars);
+write(1, "%", 1);
+count++;
+break;
+}
+default:
+write(1, &(*format), 1);
+count++;
+break;
+}
+}
+else
+{
+write(1, &(*format), 1);
+count++;
+}
+format++;
+}
+va_end(args);
+return (count);
 }

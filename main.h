@@ -29,6 +29,7 @@ int count_digits(int n);
 int print_zero(va_list args);
 int print_reverse(va_list args);
 int print_rot13(va_list args);
+int print_custom_format_r(va_list args);
 int print_binary_helper(unsigned int num);
 int print_unsigned_helper(unsigned int num);
 int print_octal_helper(unsigned int num);

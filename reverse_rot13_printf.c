@@ -45,3 +45,22 @@ printed_chars += _putchar(str[i]);
 }
 return (printed_chars);
 }
+/**
+ * print_custom_format_r - Handles the custom 'r' format specifier.
+ * @args: The va_list containing the string to reverse.
+ *
+ * Return: The number of characters printed.
+ */
+int print_custom_format_r(va_list args)
+{
+char *str = va_arg(args, char *);
+int printed_chars = 0;
+if (str)
+{
+int len = strlen(str);
+int i;
+for (i = len - 1; i >= 0; i--)
+printed_chars += _putchar(str[i]);
+}
+return (printed_chars);
+}
