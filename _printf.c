@@ -1,88 +1,81 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdarg.h>
-#include <unistd.h>
-
+int handle_specifier(const char *format, va_list args);
 /**
- * _printf - Custom printf function
- * @format: Format string
- * @...: Variable number of arguments
- * Return: Number of characters printed
+ * _printf - Our custom printf function
+ * @format: The format string to print
+ * @...: Additional arguments for format specifiers
+ *
+ * Return: The number of characters printed (excluding the null byte)
  */
 int _printf(const char *format, ...)
 {
-va_list args;
-int count = 0;
-va_start(args, format);
-while (*format)
-{
-if (*format == '%')
-{
-format++;
-if (*format == 'c')
-{
-char c = va_arg(args, int);
-write(1, &c, 1);
-count++;
+    va_list args;
+    int printed_chars = 0;
+
+    va_start(args, format);
+
+    while (format && *format)
+    {
+        if (*format == '%')
+        {
+            format++;
+            if (*format == '\0')
+                break;
+
+            printed_chars += handle_specifier(format, args);
+            format++;
+        }
+        else
+        {
+            _putchar(*format);
+            printed_chars++;
+            format++;
+        }
+    }
+
+    va_end(args);
+    return (printed_chars);
 }
-else if (*format == 's')
+
+/**
+ * handle_specifier - Handles format specifiers
+ * @format: The format string after '%'
+ * @args: The va_list of arguments
+ *
+ * Return: The number of characters printed for the specifier
+ */
+int handle_specifier(const char *format, va_list args)
 {
-char *str = va_arg(args, char *);
-if (str == NULL)
-str = "(null)";
-int len = 0;
-while (str[len])
-len++;
-write(1, str, len);
-count += len;
-}
-else if (*format == 'd' || *format == 'i')
-{
-int num = va_arg(args, int);
-int temp = num;
-int digits = 0;
-if (num == 0)
-{
-write(1, "0", 1);
-count++;
-}
-else if (num < 0)
-{
-write(1, "-", 1);
-count++;
-num = -num;
-temp = -temp;
-}
-while (temp > 0)
-{
-temp /= 10;
-digits++;
-}
-while (digits > 0)
-{
-int divisor = 1;
-for (int i = 1; i < digits; i++)
-divisor *= 10;
-char digit = (num / divisor) + '0';
-write(1, &digit, 1);
-count++;
-num %= divisor;
-digits--;
-}
-}
-else
-{
-write(1, "%", 1);
-count++;
-}
-}
-else
-{
-write(1, format, 1);
-count++;
-}
-format++;
-}
-va_end(args);
-return (count);
+    switch (*format)
+    {
+    case 'c':
+        return convert_c(args);
+    case 's':
+        return convert_s(args);
+    case 'd':
+    case 'i':
+        return convert_d(args);
+    case 'u':
+        return convert_u(args);
+    case 'o':
+        return convert_o(args);
+    case 'x':
+        return convert_x(args);
+    case 'X':
+        return convert_X(args);
+    case 'b':
+        return convert_b(args);
+    case 'S':
+        return convert_S(args);
+    case 'p':
+        return convert_p(args);
+    case 'r':
+        return convert_r(args);
+    case 'R':
+        return convert_R(args);
+    default:
+        _putchar('%');
+        _putchar(*format);
+        return (2);
+    }
 }
