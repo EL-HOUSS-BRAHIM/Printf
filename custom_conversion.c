@@ -1,118 +1,67 @@
-#include "custom_conversion.h"
-#include "helpers.h"
-
+#include "main.h"
 /**
- * convert_b - Converts and prints an unsigned integer in binary
- * @args: The va_list containing the unsigned integer to print
- *
- * Return: The number of characters printed
+ * convert_binary - Converts an unsigned integer to binary and prints it.
+ * @args: The argument list containing the unsigned integer.
+ * Return: The number of characters printed.
  */
-int convert_b(va_list args)
+int convert_binary(va_list args)
 {
-    unsigned int num = va_arg(args, unsigned int);
-    char bin_str[33]; /* Maximum length of a 32-bit binary number as a string*/
-    int length = _utoa_binary(num, bin_str);
-
-    return write(1, bin_str, length);
+unsigned int n = va_arg(args, unsigned int);
+int count = 0;
+print_binary(n);
+count += 32; /* Assumes 32-bit unsigned int */
+return count;
 }
-
 /**
- * convert_S - Converts and prints a string with non-printable characters
- * @args: The va_list containing the string to print
- *
- * Return: The number of characters printed
+ * convert_string_nonprint - Converts a string with non-printable characters
+ *  and prints it.
+ * @args: The argument list containing the string.
+ * Return: The number of characters printed.
  */
-int convert_S(va_list args)
+int convert_string_nonprint(va_list args)
 {
-    char *str = va_arg(args, char *);
-    int i, count = 0;
-
-    if (!str)
-        str = "(null)";
-
-    for (i = 0; str[i]; i++)
-    {
-        if (str[i] < 32 || str[i] >= 127)
-        {
-            _putchar('\\');
-            _putchar('x');
-            count += 2;
-            count += _print_hex(str[i]);
-        }
-        else
-        {
-            _putchar(str[i]);
-            count++;
-        }
-    }
-
-    return count;
+char *str = va_arg(args, char *);
+int count = 0;
+count += print_string_nonprint(str);
+return count;
 }
-
 /**
- * convert_p - Converts and prints a pointer address
- * @args: The va_list containing the pointer to print
- *
- * Return: The number of characters printed
+ * convert_pointer - Converts a pointer address and prints it in hexadecimal.
+ * @args: The argument list containing the pointer.
+ * Return: The number of characters printed.
  */
-int convert_p(va_list args)
+int convert_pointer(va_list args)
 {
-    unsigned long int addr = (unsigned long int)va_arg(args, void *);
-    char hex_str[17]; /* Maximum length of a 64-bit hexadecimal number as a string*/
-    int length = _ltoa_hex(addr, hex_str);
-
-    _putchar('0');
-    _putchar('x');
-
-    return 2 + write(1, hex_str, length);
+void *ptr = va_arg(args, void *);
+int count = 0;
+_putchar('0');
+_putchar('x');
+count += print_hex((unsigned long)ptr, 1); /* Always use uppercase for pointer */
+return count;
 }
-
 /**
- * convert_r - Converts and prints a reversed string
- * @args: The va_list containing the string to reverse and print
- *
- * Return: The number of characters printed
+ * convert_reversed - Converts a string and prints its reverse.
+ * @args: The argument list containing the string.
+ * Return: The number of characters printed.
  */
-int convert_r(va_list args)
+int convert_reversed(va_list args)
 {
-    char *str = va_arg(args, char *);
-    int length = _strlen(str);
-    int i;
-    for (i = length - 1; i >= 0; i--)
-        _putchar(str[i]);
-
-    return length;
+char *str = va_arg(args, char *);
+int count = 0;
+str = reverse_string(str);
+count += print_string_nonprint(str);
+return count;
 }
-
 /**
- * convert_R - Converts and prints a ROT13'ed string
- * @args: The va_list containing the string to ROT13 and print
- *
- * Return: The number of characters printed
+ * convert_rot13 - Converts a string and prints its ROT13 transformation.
+ * @args: The argument list containing the string.
+ * Return: The number of characters printed.
  */
-int convert_R(va_list args)
+int convert_rot13(va_list args)
 {
-    char *str = va_arg(args, char *);
-    int count = 0;
-    int i;
-    if (!str)
-        str = "(null)";
-
-    for (i = 0; str[i]; i++)
-    {
-        if ((str[i] >= 'A' && str[i] <= 'Z') || (str[i] >= 'a' && str[i] <= 'z'))
-        {
-            char base = (str[i] >= 'A' && str[i] <= 'Z') ? 'A' : 'a';
-            char rotated = ((str[i] - base + 13) % 26) + base;
-            _putchar(rotated);
-            count++;
-        }
-        else
-        {
-            _putchar(str[i]);
-            count++;
-        }
-    }
-
-    return count;
+char *str = va_arg(args, char *);
+int count = 0;
+str = rot13_string(str);
+count += print_string_nonprint(str);
+return count;
 }

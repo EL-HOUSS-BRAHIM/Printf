@@ -1,69 +1,86 @@
-#include "conversion.h"
-#include "helpers.h"
-
+#include "main.h"
 /**
- * convert_c - Converts and prints a character
- * @args: The va_list containing the character to print
- *
- * Return: The number of characters printed
+ * convert_char - Converts a character and prints it.
+ * @args: The argument list containing the character.
+ * Return: The number of characters printed.
  */
-int convert_c(va_list args)
+int convert_char(va_list args)
 {
-    char c = va_arg(args, int);
-    return write(1, &c, 1);
+char c = va_arg(args, int);
+return _putchar(c);
 }
-
 /**
- * convert_s - Converts and prints a string
- * @args: The va_list containing the string to print
- *
- * Return: The number of characters printed
+ * convert_string - Converts a string and prints it.
+ * @args: The argument list containing the string.
+ * Return: The number of characters printed.
  */
-int convert_s(va_list args)
+int convert_string(va_list args)
 {
-    char *str = va_arg(args, char *);
-    if (!str)
-        str = "(null)";
-    return write(1, str, _strlen(str));
+char *str = va_arg(args, char *);
+int count = 0;
+for (; *str; str++)
+{
+count += _putchar(*str);
 }
-
-/**
- * convert_d - Converts and prints a decimal integer
- * @args: The va_list containing the integer to print
- *
- * Return: The number of characters printed
- */
-int convert_d(va_list args)
-{
-    int num = va_arg(args, int);
-    char num_str[12]; /* Maximum length of an integer as a string*/
-    int length = _itoa(num, num_str);
-
-    return write(1, num_str, length);
+return count;
 }
-
 /**
- * convert_i - Converts and prints an integer
- * @args: The va_list containing the integer to print
- *
- * Return: The number of characters printed
+ * convert_percent - Converts a percent character and prints it.
+ * @args: The argument list (not used).
+ * Return: The number of characters printed (always 1).
  */
-int convert_i(va_list args)
+int convert_percent(va_list args)
 {
-    return convert_d(args);
+(void)args;
+return _putchar('%');
 }
-
 /**
- * convert_u - Converts and prints an unsigned integer
- * @args: The va_list containing the unsigned integer to print
- *
- * Return: The number of characters printed
+ * convert_integer - Converts an integer and prints it.
+ * @args: The argument list containing the integer.
+ * Return: The number of characters printed.
  */
-int convert_u(va_list args)
+int convert_integer(va_list args)
 {
-    unsigned int num = va_arg(args, unsigned int);
-    char num_str[12]; /* Maximum length of an unsigned integer as a string*/
-    int length = _itoa(num, num_str);
-
-    return write(1, num_str, length);
+int n = va_arg(args, int);
+return print_number(n);
+}
+/**
+ * convert_unsigned - Converts an unsigned integer and prints it.
+ * @args: The argument list containing the unsigned integer.
+ * Return: The number of characters printed.
+ */
+int convert_unsigned(va_list args)
+{
+unsigned int n = va_arg(args, unsigned int);
+return print_unsigned(n);
+}
+/**
+ * convert_octal - Converts an unsigned integer to octal and prints it.
+ * @args: The argument list containing the unsigned integer.
+ * Return: The number of characters printed.
+ */
+int convert_octal(va_list args)
+{
+unsigned int n = va_arg(args, unsigned int);
+return print_octal(n);
+}
+/**
+ * convert_hex - Converts an unsigned integer to hexadecimal and prints it.
+ * @args: The argument list containing the unsigned integer.
+ * Return: The number of characters printed.
+ */
+int convert_hex(va_list args)
+{
+unsigned int n = va_arg(args, unsigned int);
+return print_hex(n, 0); /* Use lowercase for hex */
+}
+/**
+ * convert_hex_upper - Converts an unsigned integer to uppercase hexadecimal and prints it.
+ * @args: The argument list containing the unsigned integer.
+ * Return: The number of characters printed.
+ */
+int convert_hex_upper(va_list args)
+{
+unsigned int n = va_arg(args, unsigned int);
+return print_hex(n, 1); /* Use uppercase for hex */
 }
