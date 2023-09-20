@@ -48,8 +48,19 @@ int convert_reversed(va_list args)
 {
 char *str = va_arg(args, char *);
 int count = 0;
-str = reverse_string(str);
-count += print_string_nonprint(str);
+if (str != NULL) {
+int length = strlen(str);
+char *reversed_str = (char *)malloc((length + 1) * sizeof(char));
+if (reversed_str != NULL) {
+int i, j;
+for (i = length - 1, j = 0; i >= 0; i--, j++) {
+reversed_str[j] = str[i];
+}
+reversed_str[length] = '\0';
+count += print_string_nonprint(reversed_str);
+free(reversed_str);
+}
+}
 return count;
 }
 /**
@@ -61,7 +72,24 @@ int convert_rot13(va_list args)
 {
 char *str = va_arg(args, char *);
 int count = 0;
-str = rot13_string(str);
-count += print_string_nonprint(str);
+if (str != NULL) {
+int length = strlen(str);
+char *rot13_str = (char *)malloc((length + 1) * sizeof(char));
+if (rot13_str != NULL) {
+int i;
+for (i = 0; i < length; i++) {
+char c = str[i];
+if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
+char base = (c >= 'a') ? 'a' : 'A';
+rot13_str[i] = (c - base + 13) % 26 + base;
+} else {
+rot13_str[i] = c;
+}
+}
+rot13_str[length] = '\0';
+count += print_string_nonprint(rot13_str);
+free(rot13_str);
+}
+}
 return count;
 }
