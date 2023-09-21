@@ -3,6 +3,11 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+typedef struct
+{
+char specifier;
+int (*func)(va_list);
+} conversion_func_t;
 int _printf(const char *format, ...);
 int convert_char(va_list args);
 int convert_string(va_list args);

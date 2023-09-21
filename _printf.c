@@ -6,10 +6,6 @@
  */
 static int (*get_conversion_function(char spec))(va_list)
 {
-typedef struct {
-char specifier;
-int (*func)(va_list);
-} conversion_func_t;
 conversion_func_t conversion_functions[] = {
 {'c', convert_char},
 {'s', convert_string},
@@ -20,19 +16,19 @@ conversion_func_t conversion_functions[] = {
 {'o', convert_octal},
 {'x', convert_hex},
 {'X', convert_hex_upper},
-{'b', convert_binary},   /* Custom */
-{'S', convert_string_nonprint}, /* Custom */
-{'p', convert_pointer}, /* Custom */
-{'r', convert_reversed}, /* Custom */
-{'R', convert_rot13}/* Custom */
+{'b', convert_binary},
+{'S', convert_string_nonprint},
+{'p', convert_pointer},
+{'r', convert_reversed},
+{'R', convert_rot13}
 };
-int i;
-for (i = 0; i < 14; i++)
+int num_conversions = sizeof(conversion_functions) / sizeof(conversion_functions[0]);
+for (int i = 0; i < num_conversions; i++)
 {
 if (conversion_functions[i].specifier == spec)
 return conversion_functions[i].func;
 }
-return NULL;
+return (NULL);
 }
 /**
  * _printf - Prints formatted output to stdout.
@@ -43,9 +39,8 @@ int _printf(const char *format, ...)
 {
 va_list args;
 int count = 0;
-int i = 0;
 va_start(args, format);
-while (format && format[i])
+for (int i = 0; format[i]; i++)
 {
 if (format[i] != '%')
 {
@@ -54,11 +49,10 @@ count++;
 }
 else
 {
-int (*convert)(va_list);
 i++;
 if (format[i] == '\0')
 break;
-convert = get_conversion_function(format[i]);
+int (*convert)(va_list) = get_conversion_function(format[i]);
 if (convert)
 count += convert(args);
 else
@@ -68,8 +62,7 @@ _putchar(format[i]);
 count += 2;
 }
 }
-i++;
 }
 va_end(args);
-return count;
+return (count);
 }
