@@ -1,68 +1,115 @@
 #include "main.h"
+
 /**
- * convert_binary - Converts an unsigned integer to binary and prints it.
- * @args: The argument list containing the unsigned integer.
- * Return: The number of characters printed.
+ * print_binary - Handles the custom '%b' conversion specifier
+ * @args: The va_list containing the argument to print
+ *
+ * Return: The number of characters printed
  */
-int convert_binary(va_list args)
+int print_binary(va_list args)
 {
-unsigned int n = va_arg(args, unsigned int);
-int count = 0;
-print_binary(n);
-count += 32; /* Assumes 32-bit unsigned int */
-return (count);
+    unsigned int num = va_arg(args, unsigned int);
+    char buffer[32];
+    int len;
+
+    _uitoa(num, buffer, 2);
+    len = _strlen(buffer);
+
+    return write(1, buffer, len);
 }
+
 /**
- * convert_string_nonprint - Converts a string with non-printable characters
- *  and prints it.
- * @args: The argument list containing the string.
- * Return: The number of characters printed.
+ * print_custom_str - Handles the custom '%S' conversion specifier
+ * @args: The va_list containing the argument to print
+ *
+ * Return: The number of characters printed
  */
-int convert_string_nonprint(va_list args)
+int print_custom_str(va_list args)
 {
-char *str = va_arg(args, char *);
-int count = 0;
-count += print_string_nonprint(str);
-return (count);
+    char *str = va_arg(args, char *);
+    int len = _strlen(str);
+    int i, count = 0;
+
+    for (i = 0; i < len; i++)
+    {
+        if (str[i] >= 32 && str[i] < 127)
+        {
+            write(1, &str[i], 1);
+            count++;
+        }
+        else
+        {
+            char hex[5];
+
+            hex[0] = '\\';
+            hex[1] = 'x';
+            hex[2] = (str[i] / 16) + '0';
+            hex[3] = (str[i] % 16) + ((str[i] % 16 > 9) ? 'A' - 10 : '0');
+            hex[4] = '\0';
+
+            write(1, hex, 4);
+            count += 4;
+        }
+    }
+
+    return count;
 }
+
 /**
- * convert_pointer - Converts a pointer address and prints it in hexadecimal.
- * @args: The argument list containing the pointer.
- * Return: The number of characters printed.
+ * print_reversed_str - Handles the custom '%r' conversion specifier
+ * @args: The va_list containing the argument to print
+ *
+ * Return: The number of characters printed
  */
-int convert_pointer(va_list args)
+int print_reversed_str(va_list args)
 {
-void *ptr = va_arg(args, void *);
-int count = 0;
-_putchar('0');
-_putchar('x');
-count += print_hex((unsigned long)ptr, 1);
-return (count);
+    char *str = va_arg(args, char *);
+    char *reversed = _reverse(str);
+    int len = _strlen(reversed);
+    int count;
+
+    count = write(1, reversed, len);
+
+    free(reversed);
+
+    return count;
 }
+
 /**
- * convert_reversed - Converts a string and prints its reverse.
- * @args: The argument list containing the string.
- * Return: The number of characters printed.
+ * print_rot13_str - Handles the custom '%R' conversion specifier
+ * @args: The va_list containing the argument to print
+ *
+ * Return: The number of characters printed
  */
-int convert_reversed(va_list args)
+int print_rot13_str(va_list args)
 {
-char *str = va_arg(args, char *);
-int count = 0;
-if (str != NULL)
-{
-int length = strlen(str);
-char *reversed_str = (char *)malloc((length + 1) * sizeof(char));
-if (reversed_str != NULL)
-{
-int i, j;
-for (i = length - 1, j = 0; i >= 0; i--, j++)
-{
-reversed_str[j] = str[i];
-}
-reversed_str[length] = '\0';
-count += print_string_nonprint(reversed_str);
-free(reversed_str);
-}
-}
-return (count);
+    char *str = va_arg(args, char *);
+    char *rot13 = strdup(str);
+    int len = _strlen(rot13);
+    int count;
+
+    if (rot13)
+    {
+        int i;
+
+        for (i = 0; i < len; i++)
+        {
+            char c = rot13[i];
+
+            if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+            {
+                char base = (c >= 'a' && c <= 'z') ? 'a' : 'A';
+                rot13[i] = (c - base + 13) % 26 + base;
+            }
+        }
+
+        count = write(1, rot13, len);
+        free(rot13);
+    }
+    else
+    {
+        count = write(1, str, len);
+    }
+
+    return count;
 }

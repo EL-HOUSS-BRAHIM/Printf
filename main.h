@@ -1,33 +1,48 @@
 #pragma once
 #include <stdarg.h>
+#include <stddef.h>
 #include <unistd.h>
-#include <string.h>
 #include <stdlib.h>
-typedef struct
-{
-char specifier;
-int (*func)(va_list);
-} conversion_func_t;
+#include <string.h>
+#include <stdio.h>
+
 int _printf(const char *format, ...);
-int convert_char(va_list args);
-int convert_string(va_list args);
-int convert_percent(va_list args);
-int convert_integer(va_list args);
-int convert_unsigned(va_list args);
-int convert_octal(va_list args);
-int convert_hex(va_list args);
-int convert_hex_upper(va_list args);
-int convert_binary(va_list args);
-int convert_string_nonprint(va_list args);
-int convert_pointer(va_list args);
-int convert_reversed(va_list args);
-int convert_rot13(va_list args);
+
+/* Helpers */
 int _putchar(char c);
-int print_number(int n);
-int print_unsigned(unsigned int n);
-int print_octal(unsigned int n);
-int print_hex(unsigned int n, int uppercase);
-void print_binary(unsigned int n);
-int print_string_nonprint(char *str);
-char *reverse_string(char *str);
-char *rot13_string(char *str);
+int _strlen(const char *str);
+char *_itoa(int n, char *buffer, int base);
+char *_uitoa(unsigned int n, char *buffer, int base);
+char *_reverse(char *str);
+
+/* Conversion functions */
+int print_char(va_list args);
+int print_str(va_list args);
+int print_int(va_list args);
+int print_unsigned(va_list args);
+int print_hex_lower(va_list args);
+int print_hex_upper(va_list args);
+int print_octal(va_list args);
+int print_binary(va_list args);
+int print_pointer(va_list args);
+int print_percent(va_list args);
+
+/* Custom Conversion functions */
+int print_binary(va_list args);
+int print_custom_str(va_list args);
+int print_reversed_str(va_list args);
+int print_rot13_str(va_list args);
+
+/* Flags functions */
+int print_plus_flag(va_list args);
+int print_space_flag(va_list args);
+int print_hash_flag(va_list args);
+int print_zero_flag(va_list args);
+int print_minus_flag(va_list args);
+
+/* Length Modifiers functions */
+int print_long(va_list args);
+int print_short(va_list args);
+
+/* Custom conversion specifier function */
+int (*get_conversion_function(char specifier))(va_list);
