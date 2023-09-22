@@ -1,130 +1,63 @@
 #include "main.h"
-
 /**
- * _putchar - Writes a character to stdout
- * @c: The character to print
- *
- * Return: 1 on success, -1 on error
+ * print_char - Prints character
+ * @list: list of arguments
+ * Return: Will return the amount of characters printed.
  */
-int _putchar(char c)
+int print_char(va_list list)
 {
-    return write(1, &c, 1);
+_write(va_arg(list, int));
+return (1);
 }
-
 /**
- * _strlen - Calculates the length of a string
- * @str: The input string
- *
- * Return: The length of the string
+ * print_str - Prints a string
+ * @list: list of arguments
+ * Return: Will return the amount of characters printed.
  */
-int _strlen(const char *str)
+int print_str(va_list list)
 {
-    int len = 0;
-
-    while (str[len])
-        len++;
-
-    return len;
+int i;
+char *str;
+str = va_arg(list, char *);
+if (str == NULL)
+str = "(null)";
+for (i = 0; str[i] != '\0'; i++)
+_write(str[i]);
+return (i);
 }
-
-
 /**
- * _itoa - Converts an integer to a string
- * @n: The integer to convert
- * @buffer: The buffer to store the result
- * @base: The base for conversion (e.g., 10 for decimal)
- *
- * Return: A pointer to the result string
+ * print_percent - Prints a percent symbol
+ * @list: list of arguments
+ * Return: Will return the amount of characters printed.
  */
-char *_itoa(int n, char *buffer, int base)
+int print_percent(__attribute__((unused))va_list list)
 {
-    int i = 0;
-    int is_negative = 0;
-
-    if (n == 0)
-    {
-        buffer[i++] = '0';
-        buffer[i] = '\0';
-        return buffer;
-    }
-
-    if (n < 0 && base == 10)
-    {
-        is_negative = 1;
-        n = -n;
-    }
-
-    while (n != 0)
-    {
-        int remainder = n % base;
-        buffer[i++] = (remainder > 9) ? (remainder - 10) + 'a' : remainder + '0';
-        n = n / base;
-    }
-
-    if (is_negative)
-        buffer[i++] = '-';
-
-    buffer[i] = '\0';
-
-    _reverse(buffer);
-
-    return buffer;
+_write('%');
+return (1);
 }
-
-
 /**
- * _uitoa - Converts an unsigned integer to a string
- * @n: The unsigned integer to convert
- * @buffer: The buffer to store the result
- * @base: The base for conversion (e.g., 10 for decimal)
- *
- * Return: A pointer to the result string
+ * print_int - Prints an integer
+ * @list: list of arguments
+ * Return: Will return the amount of characters printed.
  */
-char *_uitoa(unsigned int n, char *buffer, int base)
+int print_int(va_list list)
 {
-    int i = 0;
-
-    if (n == 0)
-    {
-        buffer[i++] = '0';
-        buffer[i] = '\0';
-        return buffer;
-    }
-
-    while (n != 0)
-    {
-        int remainder = n % base;
-        buffer[i++] = (remainder > 9) ? (remainder - 10) + 'a' : remainder + '0';
-        n = n / base;
-    }
-
-    buffer[i] = '\0';
-
-    _reverse(buffer);
-
-    return buffer;
+int num_length;
+num_length = print_num(list);
+return (num_length);
 }
-
 /**
- * _reverse - Reverses a string
- * @str: The string to reverse
- *
- * Return: A pointer to the reversed string
+ * print_unsigned - Prints Unsigned integers
+ * @list: List of all of the argumets
+ * Return: a count of the numbers
  */
-char *_reverse(char *str)
+int print_unsigned(va_list list)
 {
-    int start = 0;
-    int end = _strlen(str) - 1;
-
-    while (start < end)
-    {
-        char temp = str[start];
-        str[start] = str[end];
-        str[end] = temp;
-
-        start++;
-        end--;
-    }
-
-    return str;
+unsigned int num;
+num = va_arg(list, unsigned int);
+if (num == 0)
+return (print_unsigned_num(num));
+if (num < 1)
+return (-1);
+return (print_unsigned_num(num));
 }
