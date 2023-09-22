@@ -1,5 +1,4 @@
 #include "main.h"
-
 /**
  * print_num - prints a number sent to this function
  * @args: List of arguments
@@ -7,36 +6,30 @@
  */
 int print_num(va_list args)
 {
-    int n;
-    int div;
-    int len;
-    unsigned int num;
-
-    n = va_arg(args, int);
-    div = 1;
-    len = 0;
-
-    if (n < 0)
-    {
-        len += _write('-');
-        num = n * -1;
-    }
-    else
-        num = n;
-
-    for (; num / div > 9;)
-        div *= 10;
-
-    for (; div != 0;)
-    {
-        len += _write('0' + num / div);
-        num %= div;
-        div /= 10;
-    }
-
-    return (len);
+int n;
+int div;
+int len;
+unsigned int num;
+n = va_arg(args, int);
+div = 1;
+len = 0;
+if (n < 0)
+{
+len += _write('-');
+num = n * -1;
 }
-
+else
+num = n;
+for (; num / div > 9;)
+div *= 10;
+for (; div != 0;)
+{
+len += _write('0' + num / div);
+num %= div;
+div /= 10;
+}
+return (len);
+}
 /**
  * print_unsigned_num - Prints an unsigned number
  * @n: unsigned integer to be printed
@@ -44,24 +37,40 @@ int print_num(va_list args)
  */
 int print_unsigned_num(unsigned int n)
 {
-    int div;
-    int len;
-    unsigned int num;
-
-    div = 1;
-    len = 0;
-
-    num = n;
-
-    for (; num / div > 9;)
-        div *= 10;
-
-    for (; div != 0;)
-    {
-        len += _write('0' + num / div);
-        num %= div;
-        div /= 10;
-    }
-
-    return (len);
+int div;
+int len;
+unsigned int num;
+div = 1;
+len = 0;
+num = n;
+for (; num / div > 9;)
+div *= 10;
+for (; div != 0;)
+{
+len += _write('0' + num / div);
+num %= div;
+div /= 10;
+}
+return (len);
+}
+/**
+ * print_zero_flag - Prints a zero flag
+ * @args: List of arguments
+ * Return: The number of characters printed
+ */
+int print_zero_flag(va_list args)
+{
+(void)args;
+return (_write('0'));
+}
+/**
+ * print_minus_flag - Prints a minus flag character
+ * @args: List of arguments
+ * Return: Always returns 1 (the number of characters printed)
+ */
+int print_minus_flag(va_list args)
+{
+(void)args;
+_write('-');
+return (1);
 }

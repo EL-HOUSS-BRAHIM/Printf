@@ -37,3 +37,11 @@ char *rev_strapo(char *);
 void write_b(char *str);
 char *memcpy_fr(char *dest, char *src, unsigned int n);
 int print_unsigned_num(unsigned int);
+int hex_check(int, char);
+/* help2 */
+
+int print_plus_flag(va_list args);
+int print_space_flag(va_list args);
+int print_hash_flag(va_list args);
+int print_zero_flag(va_list args);
+int print_minus_flag(va_list args);
