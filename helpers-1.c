@@ -1,5 +1,4 @@
-#include "main.h"
-
+ #include "main.h"
 /**
  * print_reversed - Calls a function to reverse and print a string
  * @arg: Argument passed to the function
@@ -22,7 +21,6 @@ int print_reversed(va_list arg)
     free(ptr);
     return (len);
 }
-
 /**
  * print_rot13 - Converts string to rot13
  * @list: string to convert

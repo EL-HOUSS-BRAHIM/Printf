@@ -54,24 +54,26 @@ div /= 10;
 return (len);
 }
 /**
- * print_zero_flag - Prints a zero flag
- * @args: List of arguments
- * Return: Always returns 1 (the number of characters printed)
+ * print_zero - Prints a percent sign
+ * @args: The va_list (not used)
+ *
+ * Return: The number of characters printed (always 1).
  */
-int print_zero_flag(va_list args)
+int print_zero(va_list args)
 {
 (void)args;
 _write('0');
 return (1);
 }
 /**
- * print_minus_flag - Prints a minus flag character
- * @args: List of arguments
- * Return: Always returns 1 (the number of characters printed)
+ * print_plus - Prints a percent sign
+ * @args: The va_list (not used)
+ *
+ * Return: The number of characters printed (always 1).
  */
-int print_minus_flag(va_list args)
+int print_plus(va_list args)
 {
 (void)args;
-_write('-');
+_write('+');
 return (1);
 }

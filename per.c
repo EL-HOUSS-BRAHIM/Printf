@@ -48,48 +48,38 @@ printed_chars++;
 return (printed_chars);
 }
 /**
- * print_plus_flag - Prints a plus sign before a positive number
- * @args: List of arguments
- * Return: The number of characters printed
+ * print_hash - Prints a percent sign
+ * @args: The va_list (not used)
+ *
+ * Return: The number of characters printed (always 1).
  */
-int print_plus_flag(va_list args)
+int print_hash(va_list args)
 {
-int n;
-int len = 0;
-n = va_arg(args, int);
-if (n >= 0)
-{
-_write('+');
-len++;
-}
-len += print_num(args);
-return (len);
-}
-/**
- * print_space_flag - Handles the space flag in formatting
- * @args: List of arguments
- * Return: The number of characters printed
- */
-int print_space_flag(va_list args)
-{
-int n;
-int printed_chars = 0;
-n = va_arg(args, int);
-if (n >= 0)
-{
-_write(' ');
-printed_chars += 1;
-}
-return (printed_chars);
-}
-/**
- * print_hash_flag - Prints the '#' flag for octal and hexadecimal formats
- * @args: List of arguments
- * Return: The number of characters printed
- */
-int print_hash_flag(va_list args)
-{
-_write('#');
 (void)args;
+_write('#');
+return (1);
+}
+/**
+ * print_mines - Prints a percent sign
+ * @args: The va_list (not used)
+ *
+ * Return: The number of characters printed (always 1).
+ */
+int print_mines(va_list args)
+{
+(void)args;
+_write('-');
+return (1);
+}
+/**
+ * print_space - Prints a percent sign
+ * @args: The va_list (not used)
+ *
+ * Return: The number of characters printed (always 1).
+ */
+int print_space(va_list args)
+{
+(void)args;
+_write(' ');
 return (1);
 }
