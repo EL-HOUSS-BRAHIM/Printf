@@ -2,10 +2,10 @@
 /**
  * _printf - Receives the main string and all the necessary parameters to
  * print a formatted string
- * @format_str: A string containing all the desired characters
+ * @format: A string containing all the desired characters
  * Return: A total count of the characters printed
  */
-int _printf(const char *format_str, ...)
+int _printf(const char *format, ...)
 {
 int printed_characters;
 my_converter_t f_list[] = {
@@ -28,14 +28,13 @@ my_converter_t f_list[] = {
 {"+", print_plus},
 {" ", print_space},
 {"#", print_hash},
-
 {NULL, NULL}
 };
 va_list arg_list;
-if (format_str == NULL)
+if (format == NULL)
 return (-1);
-va_start(arg_list, format_str);
-printed_characters = my_par(format_str, f_list, arg_list);
+va_start(arg_list, format);
+printed_characters = my_par(format, f_list, arg_list);
 va_end(arg_list);
 return (printed_characters);
 }
