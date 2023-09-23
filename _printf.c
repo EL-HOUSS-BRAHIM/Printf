@@ -21,11 +21,7 @@ my_converter_t f_list[] = {
 {"o", print_octal},
 {"x", print_hex_lower},
 {"X", print_hex_upper},
-{"0", print_zero_flag},
-{"-", print_minus_flag},
-{"#", print_hash_flag},
-{" ", print_space_flag},
-{"+", print_plus_flag},
+{"p", print_pointer},
 {NULL, NULL}
 };
 va_list arg_list;

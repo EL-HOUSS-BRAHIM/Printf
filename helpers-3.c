@@ -1,4 +1,4 @@
-#include "main.h"
+ #include "main.h"
 /**
  * print_num - prints a number sent to this function
  * @args: List of arguments
@@ -56,12 +56,13 @@ return (len);
 /**
  * print_zero_flag - Prints a zero flag
  * @args: List of arguments
- * Return: The number of characters printed
+ * Return: Always returns 1 (the number of characters printed)
  */
 int print_zero_flag(va_list args)
 {
 (void)args;
-return (_write('0'));
+_write('0');
+return (1);
 }
 /**
  * print_minus_flag - Prints a minus flag character

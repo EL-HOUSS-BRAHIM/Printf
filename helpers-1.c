@@ -54,3 +54,18 @@ int print_rot13(va_list list)
     }
     return (i);
 }
+/**
+ * print_pointer - Prints a pointer address
+ * @args: The va_list containing the pointer
+ *
+ * Return: The number of characters printed.
+ */
+int print_pointer(va_list args)
+{
+void *ptr = va_arg(args, void *);
+char buffer[32];
+int len;
+sprintf(buffer, "%p", ptr);
+len = _strlen(buffer);
+return (write(1, buffer, len));
+}

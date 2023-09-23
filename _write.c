@@ -42,3 +42,16 @@ if (num < 1)
 return (-1);
 return (print_unsigned_num(num));
 }
+/**
+ * _strlen - Calculates the length of a string
+ * @str: The input string
+ *
+ * Return: The length of the string
+ */
+int _strlen(const char *str)
+{
+int len = 0;
+while (str[len])
+len++;
+return (len);
+}
