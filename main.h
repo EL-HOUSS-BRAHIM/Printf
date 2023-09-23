@@ -17,6 +17,7 @@ int (*f)(va_list);
 typedef struct my_converter my_converter_t;
 /* Main functions */
 int _strlen(const char *str);
+int print_custom_str(va_list args);
 int print_pointer(va_list args);
 int my_par(const char *format_str, my_converter_t f_list[], va_list arg_list);
 int _printf(const char *format_str, ...);

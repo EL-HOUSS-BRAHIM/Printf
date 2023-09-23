@@ -69,3 +69,35 @@ sprintf(buffer, "%p", ptr);
 len = _strlen(buffer);
 return (write(1, buffer, len));
 }
+/**
+ * print_custom_str - Handles the custom '%S' conversion specifier
+ * @args: The va_list containing the argument to print
+ *
+ * Return: The number of characters printed
+ */
+int print_custom_str(va_list args)
+{
+char *str = va_arg(args, char *);
+int len = _strlen(str);
+int i, count = 0;
+for (i = 0; i < len; i++)
+{
+if (str[i] >= 32 && str[i] < 127)
+{
+write(1, &str[i], 1);
+count++;
+}
+else
+{
+char hex[5];
+hex[0] = '\\';
+hex[1] = 'x';
+hex[2] = (str[i] / 16) + '0';
+hex[3] = (str[i] % 16) + ((str[i] % 16 > 9) ? 'A' - 10 : '0');
+hex[4] = '\0';
+write(1, hex, 4);
+count += 4;
+}
+}
+return (count);
+}

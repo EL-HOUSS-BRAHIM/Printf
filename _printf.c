@@ -22,6 +22,7 @@ my_converter_t f_list[] = {
 {"x", print_hex_lower},
 {"X", print_hex_upper},
 {"p", print_pointer},
+{"S", print_custom_str},
 {NULL, NULL}
 };
 va_list arg_list;
